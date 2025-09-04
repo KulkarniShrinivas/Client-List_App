@@ -1,7 +1,6 @@
 import React from 'react';
-import { clients } from '../../lib/data';
 
-const ClientTable = () => {
+const ClientTable = ({ data }) => {
   return (
     <div className="overflow-x-auto rounded-md border">
       <table className="min-w-full divide-y divide-gray-200">
@@ -25,7 +24,8 @@ const ClientTable = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {clients.map((client) => (
+          {/* Map over the passed `data` prop */}
+          {data.map((client) => (
             <tr key={client.id}>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{client.name}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{client.email}</td>
