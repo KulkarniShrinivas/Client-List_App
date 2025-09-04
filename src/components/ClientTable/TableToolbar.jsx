@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TableToolbar = () => {
+const TableToolbar = ({ onSortByClick }) => {
   return (
     <div className="flex justify-between items-center mb-4">
       <div className="flex space-x-2">
@@ -18,7 +18,10 @@ const TableToolbar = () => {
         <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md border">
           Add Client
         </button>
-        <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md border">
+        <button 
+          onClick={onSortByClick} // Add the click handler
+          className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md border"
+        >
           Sort By
         </button>
       </div>
