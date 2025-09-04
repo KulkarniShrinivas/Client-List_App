@@ -19,7 +19,7 @@ const TableToolbar = ({ onSortByClick }) => {
           Add Client
         </button>
         <button 
-          onClick={onSortByClick} // Add the click handler
+          onClick={onSortByClick} 
           className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md border"
         >
           Sort By

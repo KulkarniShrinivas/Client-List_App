@@ -1,7 +1,7 @@
-import React, { useState } from 'react'; // Import useState
+import React, { useState } from 'react'; 
 import ClientTable from './components/ClientTable/ClientTable';
 import TableToolbar from './components/ClientTable/TableToolbar';
-import SortPanel from './components/SortPanel/SortPanel'; // Import the new component
+import SortPanel from './components/SortPanel/SortPanel'; 
 import './index.css';
 
 function App() {
