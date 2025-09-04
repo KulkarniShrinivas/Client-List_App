@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SortCriterion from './SortCriterion';
+import { DndContext, closestCenter } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 const SortPanel = ({
   isOpen,
@@ -9,15 +11,25 @@ const SortPanel = ({
   onAddCriterion,
   onRemoveCriterion,
   onToggleOrder,
+  onReorderCriteria,
 }) => {
   if (!isOpen) {
     return null;
   }
 
-
   const availableFields = sortableFields.filter(
     (field) => !sortCriteria.find((c) => c.field === field)
   );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      const oldIndex = sortCriteria.findIndex(c => c.field === active.id);
+      const newIndex = sortCriteria.findIndex(c => c.field === over.id);
+      onReorderCriteria(oldIndex, newIndex);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -29,26 +41,35 @@ const SortPanel = ({
           </button>
         </div>
 
-
-        <div className="mb-4">
-          {sortCriteria.length === 0 ? (
-            <div className="border border-dashed border-gray-300 p-4 rounded-md text-center text-gray-500">
-              Drag and drop sorting criteria here
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={sortCriteria.map(c => c.field)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="mb-4">
+              {sortCriteria.length === 0 ? (
+                <div className="border border-dashed border-gray-300 p-4 rounded-md text-center text-gray-500">
+                  Drag and drop sorting criteria here
+                </div>
+              ) : (
+                sortCriteria.map((criteria) => (
+                  <SortCriterion
+                    key={criteria.field}
+                    id={criteria.field}
+                    fieldName={criteria.field}
+                    sortOrder={criteria.order}
+                    onToggleOrder={() => onToggleOrder(criteria.field)}
+                    onRemove={() => onRemoveCriterion(criteria.field)}
+                  />
+                ))
+              )}
             </div>
-          ) : (
-            sortCriteria.map((criteria) => (
-              <SortCriterion
-                key={criteria.field}
-                fieldName={criteria.field}
-                sortOrder={criteria.order}
-                onToggleOrder={() => onToggleOrder(criteria.field)}
-                onRemove={() => onRemoveCriterion(criteria.field)}
-              />
-            ))
-          )}
-        </div>
+          </SortableContext>
+        </DndContext>
 
-       
         {availableFields.length > 0 && (
           <div className="mt-4">
             <h3 className="text-md font-semibold mb-2">Add New Criterion</h3>

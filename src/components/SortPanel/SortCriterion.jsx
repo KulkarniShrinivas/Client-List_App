@@ -1,11 +1,31 @@
 import React from 'react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
-const SortCriterion = ({ fieldName, sortOrder, onToggleOrder, onRemove }) => {
+const SortCriterion = ({ fieldName, sortOrder, onToggleOrder, onRemove, id }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
-    <div className="flex items-center justify-between p-2 mb-2 bg-gray-50 rounded-md border">
-      <div className="flex items-center space-x-2">
-        {/* Placeholder for a drag handle icon */}
-        <span className="text-gray-400 cursor-grab">&#9776;</span>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      className="flex items-center justify-between p-2 mb-2 bg-gray-50 rounded-md border cursor-grab"
+    >
+      <div className="flex items-center space-x-2" {...listeners}>
+       
+        <span className="text-gray-400">&#9776;</span>
         <span className="font-medium">{fieldName}</span>
       </div>
       <div className="flex items-center space-x-2">
